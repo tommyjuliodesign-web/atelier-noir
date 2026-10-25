@@ -879,6 +879,125 @@ h2 span {
   }
 }
 
+/* 10. Motion */
+
+/* The one orchestrated moment: the hero opens in sequence.
+   Final states are the normal styles, so nothing depends on the animation finishing. */
+
+@keyframes hero-settle {
+  from { opacity: 0; transform: scale(1.08); }
+  to   { opacity: 0.92; transform: scale(1); }
+}
+
+@keyframes hero-unveil {
+  from { clip-path: inset(0 0 100% 0); transform: translateY(0.35em); }
+  to   { clip-path: inset(-0.2em -0.2em -0.2em -0.2em); transform: translateY(0); }
+}
+
+@keyframes hero-draw {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(-0.2em -0.2em -0.2em -0.2em); }
+}
+
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-image {
+    animation: hero-settle 1800ms cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
+  }
+
+  .hero .eyebrow {
+    animation: hero-rise 700ms ease-out 200ms backwards;
+  }
+
+  .hero h1 {
+    animation: hero-unveil 900ms cubic-bezier(0.22, 0.61, 0.36, 1) 350ms backwards;
+  }
+
+  .hero h1 span {
+    animation: hero-draw 800ms cubic-bezier(0.65, 0, 0.35, 1) 1000ms backwards;
+  }
+
+  .hero-description {
+    animation: hero-rise 700ms ease-out 1250ms backwards;
+  }
+
+  .hero-actions {
+    animation: hero-rise 700ms ease-out 1400ms backwards;
+  }
+
+  .hero-note,
+  .hero-index {
+    animation: hero-rise 700ms ease-out 1600ms backwards;
+  }
+
+  /* The story photo is drawn open once, as it first comes into view. */
+  .js .story-image img {
+    transition: clip-path 1100ms cubic-bezier(0.65, 0, 0.35, 1), transform 1400ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  .js .story-image:not(.is-in) img {
+    clip-path: inset(100% 0 0 0);
+    transform: scale(1.12);
+  }
+}
+
+/* Header gets a soft edge once the page has scrolled */
+.site-header {
+  transition: box-shadow 220ms ease;
+}
+
+.site-header.is-scrolled {
+  box-shadow: 0 8px 24px -16px rgba(23, 23, 21, 0.35);
+}
+
+/* Current section in the navigation */
+.nav-links > a:not(.nav-cta).is-active {
+  color: var(--color-dark);
+}
+
+@media (min-width: 681px) {
+  .nav-links > a:not(.nav-cta) {
+    position: relative;
+  }
+
+  .nav-links > a:not(.nav-cta)::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 1px;
+    background: var(--color-dark);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 240ms ease;
+  }
+
+  .nav-links > a:not(.nav-cta).is-active::after {
+    transform: scaleX(1);
+  }
+}
+
+/* Buttons and links respond to hover with a small arrow nudge */
+.button span[aria-hidden="true"],
+.nav-cta span,
+.text-link span,
+.service-link span {
+  display: inline-block;
+  transition: transform 180ms ease;
+}
+
+.button:hover span[aria-hidden="true"],
+.nav-cta:hover span,
+.text-link:hover span,
+.service-link:hover span {
+  transform: translate(2px, -2px);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
